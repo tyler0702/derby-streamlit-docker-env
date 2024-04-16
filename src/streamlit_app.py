@@ -4,6 +4,18 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import openai
+import os
+from dotenv import load_dotenv
+from bs4 import BeautifulSoup
+import urllib.parse
+import json
+
+load_dotenv()
+# 環境変数からSpotifyのClient IDを取得
+spotify_client_id = os.getenv('SPOTIFY_CLIENT_ID')
+spotify_client_secret = os.getenv('SPOTIFY_CLIENT_SECRET')
+# lastfm
+lastfm_api_key = os.getenv('LASTFM_API_KEY')
 
 def get_lastfm_artist_info(artist_name, lastfm_api_key):
     """Retrieve artist information from Last.fm API using the provided API key."""
@@ -23,8 +35,8 @@ def get_access_token(client_id, client_secret):
     auth_url = 'https://accounts.spotify.com/api/token'
     response = requests.post(auth_url, data={
         'grant_type': 'client_credentials',
-        'client_id': client_id,
-        'client_secret': client_secret,
+        'client_id': spotify_client_id,
+        'client_secret': spotify_client_secret,
     })
     if response.status_code == 200:
         return response.json()['access_token']
@@ -124,22 +136,75 @@ def plot_radar_chart(features):
 
     return fig
 
+######
+# Wikipediaスクレイピング処理
+######
+def load_artist_mappings(filename):
+    try:
+    # ファイルのフルパスを生成
+        base_dir = os.path.dirname(__file__)  # 現在のファイルのディレクトリ
+        file_path = os.path.join(base_dir, filename)  # artist.jsonへのパスを組み立てる
+        with open(filename, 'r', encoding='utf-8') as file:
+            return json.load(file)
+    except FileNotFoundError:
+        raise FileNotFoundError("The file 'artist.json' was not found. Please check the file path.")
+    except Exception as e:
+        raise Exception(f"An error occurred: {str(e)}")
+
+
+def generate_wikipedia_url(artist_name, mappings):
+    # アーティスト名に対応するエントリがあればそれを使用し、なければ通常の名前をURLエンコードする
+    wiki_title = mappings.get(artist_name, artist_name)
+    encoded_name = urllib.parse.quote(wiki_title)
+    return f"https://ja.wikipedia.org/wiki/{encoded_name}"
+
+
+def fetch_wikipedia_summary(url, start_heading, end_heading):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    
+    # `<sup>` タグを除去
+    for sup_tag in soup.find_all('sup'):
+        sup_tag.extract()
+
+    content = []
+    start_tag = soup.find('span', id=start_heading)
+    if not start_tag:
+        return f"ごめんなさい '{start_heading}' なかったよー"
+
+    current_tag = start_tag.parent  # Start from the parent of the span tag
+
+    while current_tag:
+        # Find next sibling and check if it's the end tag
+        next_sibling = current_tag.find_next_sibling()
+        
+        if current_tag.name == 'p' or current_tag.name == 'ul':
+            content.append(current_tag.text)
+        if next_sibling and next_sibling.find('span', id=end_heading):
+            break
+        
+        current_tag = next_sibling
+
+    return '\n'.join(content) if content else "見つからなかったよ〜〜."    
+
+
+
 
 def main():
     image_path = "makibao.png"
     st.image(image_path, caption='', width=100)
     st.title("DERBY's Artist Popularity and Streaming Data Tracker.v4")
 
-    client_id = st.sidebar.text_input("Spotify Client ID")
-    client_secret = st.sidebar.text_input("Spotify Client Secret")
-    lastfm_api_key = st.sidebar.text_input("Last.fm API Key")
+    # client_id = st.sidebar.text_input("Spotify Client ID")
+    # client_secret = st.sidebar.text_input("Spotify Client Secret")
+    # lastfm_api_key = st.sidebar.text_input("Last.fm API Key")
     genre = st.sidebar.text_input("Genre", value='k-pop')
     not_genres = st.sidebar.text_input("Not Genres (comma-separated)")
     openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password")
     num_artists = st.sidebar.slider("Number of Top Artists to Display", 5, 30, 10, 1)
 
-    if client_id and client_secret:
-        spotify_token = get_access_token(client_id, client_secret)
+    if spotify_client_id and spotify_client_secret:
+        spotify_token = get_access_token(spotify_client_id, spotify_client_secret)
         if spotify_token:
             artists_data = search_artists_by_genre(genre, not_genres.split(','), spotify_token)
             detailed_artists = get_artists_details(artists_data[:num_artists], spotify_token)
@@ -180,6 +245,27 @@ def main():
                             if track_features:
                                 fig = plot_radar_chart(track_features)
                                 st.pyplot(fig)
+                
+                
+                #wikipedia
+                # URLエンコードされたアーティスト名
+                # encoded_name = urllib.parse.quote(artist_info['name'])
+
+                # Wikipediaの検索URLを構築
+                # url = f"https://ja.wikipedia.org/wiki/{encoded_name}"
+                # アーティストのマッピングを読み込む
+                artist_mappings = load_artist_mappings('artist.json')
+
+                # ユーザーからの入力
+                artist_input = artist_info['name']
+
+                url = generate_wikipedia_url(artist_input, artist_mappings)
+
+                start_heading = '概要'
+                end_heading = '来歴'
+                section_text = fetch_wikipedia_summary(url, start_heading, end_heading)
+                st.subheader(f"ちょこっと'{artist_info['name']}'情報")
+                st.write(section_text)
 
                 if openai_api_key:
                     openai_info = openai_query(artist_info['name'], openai_api_key)

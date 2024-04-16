@@ -6,7 +6,6 @@ Docker は、特別な箱のようなものだと考えることができます�
 
 Docker はその透明な箱のようなもので、アプリケーションが「どこでもきちんと動く」ように保護してくれます。だから、開発者は自分のコンピューターで作ったアプリケーションを、他の人のコンピューターやインターネット上のサーバーでも、全く同じように簡単に動かすことができるのです。
 
-
 # ここでの Docker の使い方ステップ
 
 1. Docker Desktop をインストール して立ち上げる
@@ -17,17 +16,20 @@ Docker はその透明な箱のようなもので、アプリケーションが�
 
 3. このリポジトリを好きなディレクトリにクローンする
 
-4. クローンが完了したら、terminal で docker-compose.yml が置いてあるディレクトリに移動   
+4. クローンが完了したら、terminal で docker-compose.yml が置いてあるディレクトリに移動
+
 ```
 cd 「docker-compose.ymlが置いてあるディレクトリ」
 ```
 
-5. 下記のコマンドを実行  
+5. 下記のコマンドを実行
+
 ```
 docker-compose build --no-cache
 ```
 
-6. ビルドが終わったら下記のコマンドを実行  
+6. ビルドが終わったら下記のコマンドを実行
+
 ```
 docker-compose up -d
 ```
@@ -44,10 +46,29 @@ docker-compose up -d
 docker-compose down
 ```
 
-streamlit も落ちているはず〜
+これで streamlit も落ちてます〜
 
 ## docker をまた立ち上げたい時
 
 ```
+docker-compose up -d
+```
+
+## docker の再起動（落として立ち上げる）
+
+上記の docker-compose down と docker-compose up -d を同時にしてくれるコマンド
+
+```
+docker-compose restart
+```
+
+## requirements.txt を変更した時
+
+再ビルドが必要です。
+
+```
+docker-compose build --no-cache
+
+ビルド終わったら
 docker-compose up -d
 ```
