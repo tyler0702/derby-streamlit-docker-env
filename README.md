@@ -72,3 +72,9 @@ docker-compose build --no-cache
 ビルド終わったら
 docker-compose up -d
 ```
+
+## .env 環境変数ファイルに関して
+
+環境変数ファイルは Git には共有してはいけません。  
+なので、Slack でお送りまします！
+保管場所は /src/streamlit_app.py と同じディレクトリに保存してください。
