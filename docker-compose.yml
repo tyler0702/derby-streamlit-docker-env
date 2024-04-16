@@ -1,11 +1,14 @@
 version: '3.8'
 services:
   webapp:
-    build: .
+    build: 
+      context: ./
+      dockerfile: docker/Dockerfile
     ports:
       - "8501:8501"
     volumes:
-      - .:/usr/src/app
+      - ./src:/usr/src/app
     environment:
       - PYTHONUNBUFFERED=1
+      - STREAMLIT_RUN_ON_SAVE=true
 

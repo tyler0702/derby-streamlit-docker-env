@@ -12,7 +12,7 @@ city_code_list = {
 city_code_index = "東京都"
 
 
-st.title("天気アプリ") # タイトル
+st.title("hello derby!!天気アプリdayo!!") # タイトル
 st.write("調べたい地域を選んでください。") # サブタイトル
 city_code_index = st.selectbox("地域を選んでください。",city_code_list.keys()) # 選択肢のキーをst.selectboxで選択し、city_code_indexに代入
 city_code = city_code_list[city_code_index] # 選択したキーからAPIのリクエストに使うcityコードに変換し、city_codeに代入

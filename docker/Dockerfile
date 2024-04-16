@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y \
 
 
 # Pythonの依存関係ファイルをコピーしてインストール
-COPY requirements.txt ./
+COPY ../requirements.txt .
 
 # Add these lines before the `RUN pip install` command to install build essentials
 RUN apt-get update && apt-get install -y \
@@ -37,14 +37,15 @@ RUN apt-get update && apt-get install -y \
 RUN pip install --no-cache-dir -r requirements.txt
 
 # アプリケーションのファイルをコピー
-COPY . .
+COPY ../src .
 
 # 環境変数の設定
 ENV PYTHONUNBUFFERED=1
+ENV STREAMLIT_RUN_ON_SAVE=true
 
 # アプリケーションの実行コマンド（Streamlit）
 ENTRYPOINT ["streamlit", "run"]
-CMD ["streamlit_app.py"]
+CMD ["streamlit_app.py","--server.runOnSave=true"]
 
 # ユーザーのデフォルトシェルをzshに変更（必要に応じてコメントを外す）
 # RUN chsh -s /usr/bin/zsh
