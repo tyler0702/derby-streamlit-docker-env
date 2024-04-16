@@ -11,4 +11,4 @@ pyocr
 pillow
 asari
 openai
-
+matplotlib
