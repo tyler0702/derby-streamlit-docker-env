@@ -9,28 +9,25 @@ Docker はその透明な箱のようなもので、アプリケーションが�
 
 # ここでの Docker の使い方ステップ
 
-1. Docker Desktop をインストール
+1. Docker Desktop をインストール  
    https://www.docker.com/ja-jp/products/docker-desktop
 
-2. Docker Hub にてアカウントを作成する
+2. Docker Hub にてアカウントを作成する  
    https://hub.docker.com/
 
 3. このリポジトリを好きなディレクトリにクローンする
 
-4. クローンが完了したら、terminal で docker-compose.yml が置いてあるディレクトリに移動
-
+4. クローンが完了したら、terminal で docker-compose.yml が置いてあるディレクトリに移動   
 ```
 cd 「docker-compose.ymlが置いてあるディレクトリ」
 ```
 
-5. 下記のコマンドを実行
-
+5. 下記のコマンドを実行  
 ```
 docker-compose build --no-cache
 ```
 
-6. ビルドが終わったら下記のコマンドを実行
-
+6. ビルドが終わったら下記のコマンドを実行  
 ```
 docker-compose up -d
 ```
