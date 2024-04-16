@@ -9,7 +9,7 @@ Docker はその透明な箱のようなもので、アプリケーションが�
 
 # ここでの Docker の使い方ステップ
 
-1. Docker Desktop をインストール  
+1. Docker Desktop をインストール して立ち上げる
    https://www.docker.com/ja-jp/products/docker-desktop
 
 2. Docker Hub にてアカウントを作成する  
