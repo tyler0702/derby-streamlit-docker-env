@@ -3,10 +3,7 @@ streamlit==1.8.0
 streamlit-ace==0.1.1
 requests
 pandas
-yfinance
 altair==4.0.0
-SpeechRecognition
-pyaudio
 pyocr
 pillow
 asari
