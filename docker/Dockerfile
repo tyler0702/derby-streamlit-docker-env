@@ -45,7 +45,8 @@ ENV STREAMLIT_RUN_ON_SAVE=true
 
 # アプリケーションの実行コマンド（Streamlit）
 ENTRYPOINT ["streamlit", "run"]
-CMD ["streamlit_app.py","--server.runOnSave=true"]
+# CMD ["streamlit_app.py","--server.runOnSave=true"]
+CMD ["main.py","--server.runOnSave=true"]
 
 # ユーザーのデフォルトシェルをzshに変更（必要に応じてコメントを外す）
 # RUN chsh -s /usr/bin/zsh

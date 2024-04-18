@@ -1,0 +1,11 @@
+{
+  "name": "derby debug",
+  // docker-compose.ymlのファイルパスを指定
+  "dockerComposeFile": "../docker-compose.yml",
+  // docker-compose.ymlで指定しているpythonのservice名を指定
+  	"service":,
+  // 指定したserviceのworkspaceフォルダを指定
+  "workspaceFolder": "/usr/src/app",
+  // リモート先にpythonの拡張機能追加
+  "extensions": ["ms-python.python"]
+}

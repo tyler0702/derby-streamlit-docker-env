@@ -1,0 +1,10 @@
+{
+  "change": {
+    "BTS": "BTS_(音楽グループ)",
+    "Taylor Swift": "テイラー・スウィフト",
+    "JUNG KOOK": "JUNG_KOOK",
+    "TWICE": "TWICE_(韓国の音楽グループ)",
+    "IVE": "IVE_(音楽グループ)"
+  },
+  "excluded": ["Jack Harlow", "RADWIMPS", "Tech N9ne"]
+}
