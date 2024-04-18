@@ -15,7 +15,7 @@ spotify_client_secret = os.getenv('SPOTIFY_CLIENT_SECRET')
 lastfm_api_key = os.getenv('LASTFM_API_KEY')
 
 def main():
-    image_path = "makibao.png"
+    image_path = "./makibao.png"
     st.image(image_path, caption='', width=200)
     st.title("DERBY's Artist Popularity and Streaming Data Tracker.v4")
 
