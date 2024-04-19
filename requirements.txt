@@ -4,9 +4,6 @@ streamlit-ace==0.1.1
 requests
 pandas
 altair==4.0.0
-pyocr
-pillow
-asari
 openai
 matplotlib
 numpy
