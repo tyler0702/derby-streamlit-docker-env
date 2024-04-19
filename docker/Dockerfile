@@ -10,15 +10,13 @@ WORKDIR /usr/src/app
 # システム依存関係のインストール
 # apt-get updateとapt-get installを一つのRUN命令で実行して不要なレイヤを削減
 RUN apt-get update && apt-get install -y \
-    # pyaudioの依存関係
+    gcc \
+    libasound2-dev \
     portaudio19-dev \
-    # 一部の音声処理ライブラリ用
+    python3-dev \
     libflac-dev \
-    # Tesseract-OCR用
     tesseract-ocr \
-    # Tesseract-OCR開発用ライブラリ
     libtesseract-dev \
-    # zshのインストール
     zsh \
     && rm -rf /var/lib/apt/lists/*
 
@@ -26,13 +24,13 @@ RUN apt-get update && apt-get install -y \
 # Pythonの依存関係ファイルをコピーしてインストール
 COPY ../requirements.txt .
 
-# Add these lines before the `RUN pip install` command to install build essentials
-RUN apt-get update && apt-get install -y \
-    gcc \
-    libasound2-dev \
-    portaudio19-dev \
-    python3-dev \
-    && rm -rf /var/lib/apt/lists/*
+# # Add these lines before the `RUN pip install` command to install build essentials
+# RUN apt-get update && apt-get install -y \
+#     gcc \
+#     libasound2-dev \
+#     portaudio19-dev \
+#     python3-dev \
+#     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install --no-cache-dir -r requirements.txt
 

@@ -11,3 +11,4 @@ beautifulsoup4
 lxml  # オプショナル：より高速なパーサー
 html5lib  # オプショナル：別のパーサー
 python-dotenv
+protobuf==3.20.0
